@@ -50,7 +50,7 @@ class ORPO:
         # log_odds = (policy_chosen_logps - policy_rejected_logps) -
         # (torch.log1p(-torch.exp(policy_chosen_logps)) - torch.log1p(-torch.exp(policy_rejected_logps)))
         log_odds = (torch.log(pos_prob) - torch.log(neg_prob)) - torch.log(1 - pos_prob) + torch.log(1 - neg_prob)
-        # 下面两行是公式7,OR偏好比值先log(防止值过大，防止梯度爆炸)， 在sigmoid到0到1(防止值过大，防止梯度爆炸)，在log()
+        # 下面两行是公式7,OR偏好比值先log(防止值过大，防止梯度爆炸)， 在sigmoid到0到1(防止值过大，防止梯度爆炸)
         sig_ratio = torch.nn.functional.sigmoid(log_odds)
         ratio = torch.log(sig_ratio)
         odds_loss = self.alpha * ratio
